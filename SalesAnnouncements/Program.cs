@@ -1,4 +1,5 @@
 using SalesAnnouncements.Data;
+using SalesAnnouncements.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddSqlServer<DatabaseContext>("Server=localhost;Database=sales-announcements-api;Trusted_Connection=True;");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddScoped<UserService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
