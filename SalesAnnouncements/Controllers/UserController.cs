@@ -16,6 +16,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    public IEnumerable<User> GetUsers()
+        => _userService.GetUsers();
+
+    [HttpGet("{id}")]
     public ActionResult<User> GetUser(int id)
     {
         var user = _userService.GetUser(id);
