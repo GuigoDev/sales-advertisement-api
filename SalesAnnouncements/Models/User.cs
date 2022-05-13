@@ -1,21 +1,20 @@
 using System.ComponentModel.DataAnnotations;
+//using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace SalesAnnouncements.Models;
 
 public class User
-{
-    public int UserID { get; set; }
+{   
+    public int UserId { get; set; }
 
-    public string? FirstName { get; set; }
-
-    public string? LastName { get; set; }
+    public string? Name { get; set; }
 
     public string? Email { get; set; }
 
-    [MaxLength(25)]
-    public string? Password { get; set; }
-
+    [MaxLength(30)]
     [JsonIgnore]
-    public ICollection<Announcement>? Announcement { get; set; }
+    public string? Password { get; set; }
+    
+    public List<Announcement>? Announcements { get; set; }
 }
