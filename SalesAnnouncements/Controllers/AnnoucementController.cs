@@ -15,6 +15,10 @@ public class AnnouncementController : ControllerBase
         _announcementService = announcementService;
     }
 
+    [HttpGet]
+    public List<Announcement> Get()
+        => _announcementService.GetAnnouncements();
+
     [HttpGet("{id}")]
     public ActionResult<Announcement> GetById(int id)
     {

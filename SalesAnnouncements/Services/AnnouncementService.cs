@@ -13,7 +13,7 @@ public class AnnouncementService
         _databaseContext = databaseContext;
     }
 
-    public IEnumerable<Announcement> GetAnnouncements()
+    public List<Announcement> GetAnnouncements()
     {
         return _databaseContext.Announcements
             .AsNoTracking()
