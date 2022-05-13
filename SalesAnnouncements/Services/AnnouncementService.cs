@@ -52,4 +52,15 @@ public class AnnouncementService
 
         return newAnnoucement;
     }
+
+    public void DeleteAnnouncement(int id)
+    {
+        var announcementToDelete = _databaseContext.Announcements.Find(id);
+
+        if(announcementToDelete is null)
+            throw new NullReferenceException("Announcement does not exists!");
+
+        _databaseContext.Announcements.Remove(announcementToDelete);
+        _databaseContext.SaveChanges();
+    }
 }

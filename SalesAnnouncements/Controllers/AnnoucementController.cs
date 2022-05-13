@@ -15,8 +15,6 @@ public class AnnouncementController : ControllerBase
         _announcementService = announcementService;
     }
 
-    
-
     [HttpGet("{id}")]
     public ActionResult<Announcement> GetById(int id)
     {
@@ -36,5 +34,19 @@ public class AnnouncementController : ControllerBase
         return CreatedAtAction(
             nameof(GetById), new { id = newAnnouncement!.AnnouncementId}, newAnnouncement
         );
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var announcementToDelete = _announcementService.GetAnnouncement(id);
+
+        if(announcementToDelete is not null)
+        {
+            _announcementService.DeleteAnnouncement(id);
+            return NoContent();
+        }
+        
+        return NotFound();
     }
 }
