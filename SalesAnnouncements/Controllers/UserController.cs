@@ -16,6 +16,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    public IEnumerable<User> GetUsers()
+        => _userService.GetUsers();
+
+    [HttpGet("{id}")]
     public ActionResult<User> GetUser(int id)
     {
         var user = _userService.GetUser(id);
@@ -31,10 +35,10 @@ public class UserController : ControllerBase
     public IActionResult Create(User user)
     {
         var userToCreate = _userService.CreateUser(user);
-        return CreatedAtAction(nameof(GetUser), new { id = user!.UserID }, user);
+        return CreatedAtAction(nameof(GetUser), new { id = user!.UserId }, user);
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public IActionResult Update(int id, User user)
     {
         var userToUpdate = _userService.GetUser(id);

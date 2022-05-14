@@ -20,7 +20,8 @@ public class UserService
     {
         return _databaseContext.Users
             .AsNoTracking()
-            .SingleOrDefault(user => user.UserID == id);
+            .Include(user => user.Announcements)
+            .SingleOrDefault(user => user.UserId == id);
     }
 
     public User CreateUser(User user)
