@@ -16,7 +16,7 @@ public class UserService
     public IEnumerable<User> GetUsers()
         => _databaseContext.Users.AsNoTracking().ToList();
     
-    public User? GetUser(int id)
+    public User? GetUserById(int id)
     {
         return _databaseContext.Users
             .AsNoTracking()
@@ -29,6 +29,8 @@ public class UserService
         _databaseContext.Users.Add(user);
         _databaseContext.SaveChanges();
 
+        user.Password = "";
+        
         return user;
     }
 

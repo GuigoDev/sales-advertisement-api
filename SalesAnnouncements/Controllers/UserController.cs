@@ -20,9 +20,9 @@ public class UserController : ControllerBase
         => _userService.GetUsers();
 
     [HttpGet("{id}")]
-    public ActionResult<User> GetUser(int id)
+    public ActionResult<User> GetById(int id)
     {
-        var user = _userService.GetUser(id);
+        var user = _userService.GetUserById(id);
 
         if(user is not null)
             return user;
@@ -35,13 +35,13 @@ public class UserController : ControllerBase
     public IActionResult Create(User user)
     {
         var userToCreate = _userService.CreateUser(user);
-        return CreatedAtAction(nameof(GetUser), new { id = user!.UserId }, user);
+        return CreatedAtAction(nameof(GetById), new { id = user!.UserId }, user);
     }
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, User user)
     {
-        var userToUpdate = _userService.GetUser(id);
+        var userToUpdate = _userService.GetUserById(id);
 
         if(userToUpdate is not null)
         {
@@ -55,7 +55,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var userToDelete = _userService.GetUser(id);
+        var userToDelete = _userService.GetUserById(id);
 
         if(userToDelete is not null)
         {

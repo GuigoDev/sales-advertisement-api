@@ -31,13 +31,27 @@ public class AnnouncementController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody]Announcement announcement, [FromHeader] int id)
+    public IActionResult Create([FromBody]Announcement announcement, [FromHeader] int userId)
     {
-        var newAnnouncement = _announcementService.CreateAnnoucement(announcement, id);
+        var newAnnouncement = _announcementService.CreateAnnoucement(announcement, userId);
 
         return CreatedAtAction(
             nameof(GetById), new { id = newAnnouncement!.AnnouncementId}, newAnnouncement
         );
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, Announcement announcement)
+    {
+        var announcementToUpdate = _announcementService.GetAnnouncement(id);
+
+        if(announcementToUpdate is not null)
+        {
+            _announcementService.UpdateAnnouncement(id, announcement);
+            return NoContent();
+        }
+        else
+            return NotFound();
     }
 
     [HttpDelete("{id}")]
