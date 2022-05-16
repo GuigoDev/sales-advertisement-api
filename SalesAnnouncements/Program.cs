@@ -5,10 +5,14 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(x =>
-    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers().AddJsonOptions(
+    x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 
-builder.Services.AddSqlServer<DatabaseContext>("Server=localhost;Database=sales-announcements-api;Trusted_Connection=True;");
+builder.Services.AddSqlServer<DatabaseContext>(
+    "Server=localhost;Database=sales-announcements-api;Trusted_Connection=True;"
+);
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<UserService>();

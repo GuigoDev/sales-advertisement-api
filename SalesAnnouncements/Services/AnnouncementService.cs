@@ -17,11 +17,14 @@ public class AnnouncementService
     {
         return _databaseContext.Announcements
             .AsNoTracking()
+            .Include(announcement => announcement.User)
             .ToList();
     }
 
     public Announcement? GetAnnouncement(int id)
     {
+       var announcement = _databaseContext.Announcements.Find(id);
+
         return _databaseContext.Announcements
             .AsNoTracking()
             .Include(announcement => announcement.User)
@@ -31,11 +34,11 @@ public class AnnouncementService
     public Announcement CreateAnnoucement(Announcement announcement, int userId)
     {   
         var owner = _databaseContext.Users.Find(userId);
-
+        
         if(owner is null)
             throw new NullReferenceException("User does not exists!");
 
-        var user = _databaseContext.Announcements.Include(user => user.User).ToList();
+        owner.Password = "";
 
         var newAnnoucement = new Announcement 
         {
