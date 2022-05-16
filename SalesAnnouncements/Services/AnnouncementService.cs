@@ -34,8 +34,7 @@ public class AnnouncementService
     public Announcement CreateAnnoucement(Announcement announcement, int userId)
     {   
         var owner = _databaseContext.Users.Find(userId);
-       
-
+        
         if(owner is null)
             throw new NullReferenceException("User does not exists!");
 
