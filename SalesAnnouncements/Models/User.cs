@@ -12,6 +12,7 @@ public class User
     public string? Email { get; set; }
 
     [MaxLength(30)]
+    [JsonIgnore]
     public string? Password { get; set; }
     
     public List<Announcement>? Announcements { get; set; }
