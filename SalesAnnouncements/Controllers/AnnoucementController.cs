@@ -30,10 +30,14 @@ public class AnnouncementController : ControllerBase
         return NotFound();
     }
 
-    [HttpPost]
-    public IActionResult Create([FromBody]Announcement announcement, [FromHeader] int userId)
+    [HttpPost("[action]")]
+    public IActionResult Create([FromForm] List<IFormFile> images, [FromForm] Announcement announcement, [FromHeader] int userId)
     {
-        var newAnnouncement = _announcementService.CreateAnnoucement(announcement, userId);
+
+        if (images.Count == 0)
+            return BadRequest();
+
+        var newAnnouncement = _announcementService.CreateAnnoucement(images, announcement, userId);
 
         return CreatedAtAction(
             nameof(GetById), new { id = newAnnouncement!.AnnouncementId}, newAnnouncement

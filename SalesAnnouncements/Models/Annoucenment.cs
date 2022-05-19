@@ -6,6 +6,8 @@ public class Announcement
 {   
     public int AnnouncementId { get; set; }
 
+    public string? Images { get; set; }
+
     [MaxLength(60)]
     public string? Title { get; set; }
 
