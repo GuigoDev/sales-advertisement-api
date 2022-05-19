@@ -7,10 +7,11 @@ namespace SalesAnnouncements.Services;
 public class AnnouncementService
 {
     private readonly DatabaseContext _databaseContext;
-
-    public AnnouncementService(DatabaseContext databaseContext)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public AnnouncementService(DatabaseContext databaseContext, IWebHostEnvironment webHostEnvironment)
     {
         _databaseContext = databaseContext;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public List<Announcement> GetAnnouncements()
@@ -31,7 +32,7 @@ public class AnnouncementService
             .SingleOrDefault(announcement => announcement.AnnouncementId == id);
     }
 
-    public Announcement CreateAnnoucement(Announcement announcement, int userId)
+    public Announcement CreateAnnoucement(List<IFormFile> images,Announcement announcement, int userId)
     {   
         var owner = _databaseContext.Users.Find(userId);
         
@@ -40,8 +41,21 @@ public class AnnouncementService
 
         owner.Password = "";
 
-        var newAnnoucement = new Announcement 
+        string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
+        string filePath = "";
+
+        foreach (var image in images)
         {
+            filePath = Path.Combine(directoryPath, image.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
+        }
+
+        var newAnnoucement = new Announcement
+        {
+            Images = $"{filePath}",
             Title = announcement.Title,
             Description = announcement.Description,
             Price = announcement.Price,
