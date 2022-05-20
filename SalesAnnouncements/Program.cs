@@ -5,6 +5,15 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddControllers().AddJsonOptions(
     x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
@@ -32,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
