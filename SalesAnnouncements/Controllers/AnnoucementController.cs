@@ -33,10 +33,6 @@ public class AnnouncementController : ControllerBase
     [HttpPost("[action]")]
     public IActionResult Create([FromForm] IFormFile image, [FromForm] Announcement announcement, [FromHeader] int userId)
     {
-
-        if (image is null)
-            return BadRequest();
-
         var newAnnouncement = _announcementService.CreateAnnoucement(image, announcement, userId);
 
         return CreatedAtAction(

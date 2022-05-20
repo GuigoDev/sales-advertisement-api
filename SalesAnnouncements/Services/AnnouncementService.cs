@@ -39,18 +39,19 @@ public class AnnouncementService
         if(owner is null)
             throw new NullReferenceException("User does not exists!");
 
-        owner.Password = "";
+        if (image is null)
+            throw new NullReferenceException("No image to upload!");
 
         string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
         string filePath = "";
 
-        
         filePath = Path.Combine(directoryPath, image.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             image.CopyTo(stream);
         }
-        
+
+        owner.Password = "";
 
         var newAnnoucement = new Announcement
         {
