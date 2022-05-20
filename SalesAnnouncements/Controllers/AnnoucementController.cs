@@ -31,13 +31,13 @@ public class AnnouncementController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public IActionResult Create([FromForm] List<IFormFile> images, [FromForm] Announcement announcement, [FromHeader] int userId)
+    public IActionResult Create([FromForm] IFormFile image, [FromForm] Announcement announcement, [FromHeader] int userId)
     {
 
-        if (images.Count == 0)
+        if (image is null)
             return BadRequest();
 
-        var newAnnouncement = _announcementService.CreateAnnoucement(images, announcement, userId);
+        var newAnnouncement = _announcementService.CreateAnnoucement(image, announcement, userId);
 
         return CreatedAtAction(
             nameof(GetById), new { id = newAnnouncement!.AnnouncementId}, newAnnouncement

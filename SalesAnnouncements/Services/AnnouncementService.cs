@@ -32,7 +32,7 @@ public class AnnouncementService
             .SingleOrDefault(announcement => announcement.AnnouncementId == id);
     }
 
-    public Announcement CreateAnnoucement(List<IFormFile> images,Announcement announcement, int userId)
+    public Announcement CreateAnnoucement(IFormFile image,Announcement announcement, int userId)
     {   
         var owner = _databaseContext.Users.Find(userId);
         
@@ -44,14 +44,13 @@ public class AnnouncementService
         string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
         string filePath = "";
 
-        foreach (var image in images)
+        
+        filePath = Path.Combine(directoryPath, image.FileName);
+        using (var stream = new FileStream(filePath, FileMode.Create))
         {
-            filePath = Path.Combine(directoryPath, image.FileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                image.CopyTo(stream);
-            }
+            image.CopyTo(stream);
         }
+        
 
         var newAnnoucement = new Announcement
         {
@@ -83,20 +82,20 @@ public class AnnouncementService
         
         if(title != null && description != null && price != announcementToUpdate.Price)
         {
-             announcementToUpdate.Title = title ?? announcementToUpdate.Title;
-             announcementToUpdate.Description = description ?? announcementToUpdate.Description;
+             announcementToUpdate.Title = title;
+             announcementToUpdate.Description = description;
              announcementToUpdate.Price = price;
 
             _databaseContext.SaveChanges();
         }
         else if(title is not null)
         {
-            announcementToUpdate.Title = title ?? announcementToUpdate.Title;
+            announcementToUpdate.Title = title;
             _databaseContext.SaveChanges();
         }
         else if(description is not null)
         {
-            announcementToUpdate.Description = description ?? announcementToUpdate.Description;
+            announcementToUpdate.Description = description;
             _databaseContext.SaveChanges();
         }
         else if(price != announcementToUpdate.Price)
