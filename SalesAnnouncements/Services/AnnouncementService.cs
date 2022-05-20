@@ -42,10 +42,9 @@ public class AnnouncementService
         if (image is null)
             throw new NullReferenceException("No image to upload!");
 
-        string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
-        string filePath = "";
+        var directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
 
-        filePath = Path.Combine(directoryPath, image.FileName);
+        var filePath = Path.Combine(directoryPath, image.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             image.CopyTo(stream);
@@ -55,7 +54,7 @@ public class AnnouncementService
 
         var newAnnoucement = new Announcement
         {
-            Images = $"{filePath}",
+            Images = filePath,
             Title = announcement.Title,
             Description = announcement.Description,
             Price = announcement.Price,
