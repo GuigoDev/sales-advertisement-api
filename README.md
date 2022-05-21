@@ -1,4 +1,4 @@
-API for announcement platforms.
+API for advertisement platforms.
 
 <br/>
 
