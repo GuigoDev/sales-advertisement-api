@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "siAmR+E8rmBUvFmXQk+RlV7l0BwbGyHcvVYK+w1C/09y+zFiL2C3nQyBdD991vN4MBJExdi5sUh+O2oStfDjXw==",
+  "dgSpecHash": "gm771RwmwIe1MuuR9UUyMcbCK/6JhIu5ERJU6ziz/ItPGFWo32ZL9Kf9NIRr3DErawvtf2088SrAI0Y1/x+/lg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\guilh\\source\\repos\\GuigoDev\\sales-announcements-api\\SalesAdvertisement\\SalesAdvertisement.csproj",
+  "projectFilePath": "C:\\Users\\guilh\\source\\repos\\GuigoDev\\sales-advertisement-api\\SalesAdvertisement\\SalesAdvertisement.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\guilh\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\6.0.4\\microsoft.aspnetcore.diagnostics.entityframeworkcore.6.0.4.nupkg.sha512",
