@@ -43,8 +43,10 @@ public class AdvertisementService
             throw new NullReferenceException("No image to upload!");
 
         var directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
+        var fullDirectoryPath = Path.Combine(directoryPath, $"{userId}");
+        Directory.CreateDirectory(fullDirectoryPath);
 
-        var filePath = Path.Combine(directoryPath, image.FileName);
+        var filePath = Path.Combine(fullDirectoryPath, image.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             image.CopyTo(stream);
