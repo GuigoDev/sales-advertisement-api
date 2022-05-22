@@ -114,6 +114,9 @@ public class AdvertisementService
         if(advertisementToDelete is null)
             throw new NullReferenceException("Advertisement does not exists!");
 
+        
+        File.Delete(advertisementToDelete.Images);
+
         _databaseContext.Advertisements.Remove(advertisementToDelete);
         _databaseContext.SaveChanges();
     }
