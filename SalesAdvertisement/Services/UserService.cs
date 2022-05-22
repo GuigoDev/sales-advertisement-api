@@ -65,6 +65,19 @@ public class UserService
         if(userToDelete is null)
             throw new NullReferenceException("User does not exists!");
 
+        var imagesDirectory = Path.Combine(
+            Directory.GetCurrentDirectory(), $"Images{Path.DirectorySeparatorChar}{userToDelete.UserId}"
+        );
+
+        IEnumerable<string> images = Directory.EnumerateFiles(imagesDirectory, "*");
+
+        foreach(string image in images)
+        {
+            File.Delete(image);
+        }
+
+        Directory.Delete(imagesDirectory);
+
         _databaseContext.Users.Remove(userToDelete);
         _databaseContext.SaveChanges();
     }
