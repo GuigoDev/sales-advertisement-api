@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace SalesAdvertisement.Controllers;
 
 [ApiController]
-[Route("v1/[controller]")]
+[Route("[controller]")]
 public class UserController : ControllerBase
 {
     UserService _userService;
