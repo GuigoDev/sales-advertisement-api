@@ -2,7 +2,7 @@ using SalesAdvertisement.Models;
 using SalesAdvertisement.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SalesAnnouncements.Controllers;
+namespace SalesAdvertisement.Controllers;
 
 [ApiController]
 [Route("v1/[controller]")]
