@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "i83GQ+Y7Sjtf/u2DSGqoejbjZs3nM3SGMEzAL9ijWDApUEMgNcordGBIMREUwIQxobQzCEjnd9AZc+JLTRXwvg==",
+  "dgSpecHash": "vSNr7uXQ9bslMoY1lFk7e+lqoAnnyyz7GxmNTZpwSYh/Pz6bcSWoHmfYgYwWGi3A/6u4GpXwnemD68bQCDK2nQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\guilh\\Source\\Repos\\GuigoDev\\sales-advertisement-api\\SalesAdvertisement\\SalesAdvertisement.csproj",
   "expectedPackageFiles": [
@@ -33,6 +33,7 @@
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.8.0\\microsoft.identitymodel.tokens.6.8.0.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.15.1\\microsoft.visualstudio.azure.containers.tools.targets.1.15.1.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\swashbuckle.aspnetcore\\6.3.1\\swashbuckle.aspnetcore.6.3.1.nupkg.sha512",
