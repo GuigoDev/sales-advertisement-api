@@ -16,8 +16,9 @@ public class AnnouncementController : ControllerBase
     }
 
     [HttpGet]
+    [Route("/")]
     public List<Advertisement> Get()
-        => _advertisementService.GetAdvertisement();
+        => _advertisementService.GetAdvertisements();
 
     [HttpGet("{id}")]
     public ActionResult<Advertisement> GetById(int id)
