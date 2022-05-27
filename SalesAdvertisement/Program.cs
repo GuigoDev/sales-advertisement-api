@@ -18,9 +18,7 @@ builder.Services.AddControllers().AddJsonOptions(
     x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
 
-builder.Services.AddSqlServer<DatabaseContext>(
-    "Data Source=tcp:sales-advertisement-api-db.database.windows.net,1433;Initial Catalog=SalesAdvertisement_db;User Id=GuigoDev@sales-advertisement-api-db;Password=k20.c20xe-ap"
-);
+builder.Services.AddSqlite<DatabaseContext>("Data Source = ApiDatabase.db");
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
