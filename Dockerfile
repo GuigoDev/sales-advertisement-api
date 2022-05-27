@@ -19,4 +19,6 @@ RUN dotnet publish "SalesAdvertisement.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SalesAdvertisement.dll"]
+#ENTRYPOINT ["dotnet", "SalesAdvertisement.dll"]
+# -- Uses Heroku's dynamic port. --
+CMD ASPNETCORE_URLS="http://*$PORT" dotnet SalesAdvertisement.dll

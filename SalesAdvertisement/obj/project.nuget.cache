@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "vSNr7uXQ9bslMoY1lFk7e+lqoAnnyyz7GxmNTZpwSYh/Pz6bcSWoHmfYgYwWGi3A/6u4GpXwnemD68bQCDK2nQ==",
+  "dgSpecHash": "H7KMPiXVD8XN0UObsvJbN5ZIvGCtvxcH12kLz7yUCmlJLfXNlKkRXYbGSuQd6yEePehGxNvAY3X74nCzD1xBUA==",
   "success": true,
   "projectFilePath": "C:\\Users\\guilh\\Source\\Repos\\GuigoDev\\sales-advertisement-api\\SalesAdvertisement\\SalesAdvertisement.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.entityframeworkcore.design\\6.0.5\\microsoft.entityframeworkcore.design.6.0.5.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.5\\microsoft.entityframeworkcore.relational.6.0.5.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\6.0.5\\microsoft.entityframeworkcore.sqlserver.6.0.5.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\6.0.1\\microsoft.entityframeworkcore.tools.6.0.1.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\6.0.0\\microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\microsoft.extensions.caching.memory\\6.0.1\\microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",

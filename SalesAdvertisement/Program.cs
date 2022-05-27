@@ -19,7 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(
 );
 
 builder.Services.AddSqlServer<DatabaseContext>(
-    "Server=localhost;Database=sales-advertisement-api;Trusted_Connection=True;"
+    "Data Source=tcp:sales-advertisement-api-db.database.windows.net,1433;Initial Catalog=SalesAdvertisement_db;User Id=GuigoDev@sales-advertisement-api-db;Password=k20.c20xe-ap"
 );
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
