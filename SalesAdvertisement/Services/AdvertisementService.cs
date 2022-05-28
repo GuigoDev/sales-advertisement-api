@@ -14,7 +14,7 @@ public class AdvertisementService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public List<Advertisement> GetAdvertisement()
+    public List<Advertisement> GetAdvertisements()
     {
         return _databaseContext.Advertisements
             .AsNoTracking()
