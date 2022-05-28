@@ -6,17 +6,16 @@ namespace SalesAdvertisement.Controllers;
 
 [ApiController]
 [Route("/[controller]")]
-public class AnnouncementController : ControllerBase
+public class AdvertisementController : ControllerBase
 {
     AdvertisementService _advertisementService;
 
-    public AnnouncementController(AdvertisementService advertisementService)
+    public AdvertisementController(AdvertisementService advertisementService)
     {
         _advertisementService = advertisementService;
     }
 
     [HttpGet]
-    [Route("/")]
     public List<Advertisement> Get()
         => _advertisementService.GetAdvertisements();
 
