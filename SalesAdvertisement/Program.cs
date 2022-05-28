@@ -1,6 +1,6 @@
 using SalesAdvertisement.Data;
 using SalesAdvertisement.Services;
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +14,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers().AddJsonOptions(
-    x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+builder.Services.AddControllers();
+
+builder.Services.AddNpgsql<DatabaseContext>(
+    "Host=ec2-52-3-2-245.compute-1.amazonaws.com;Database=dfb3jal2vndqcs;Username=kxqvynujktzpzv;Password=80e641f45400709629fdc0a0ba5366bcb6daa6329656fe954a69bcd7210b99e9"
 );
-
-builder.Services.AddSqlite<DatabaseContext>("Data Source = ApiDatabase.db");
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AdvertisementService>();
