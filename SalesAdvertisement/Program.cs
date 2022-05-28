@@ -1,11 +1,10 @@
 using SalesAdvertisement.Data;
 using SalesAdvertisement.Services;
-//using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -14,7 +13,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(
+    x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 
 builder.Services.AddNpgsql<DatabaseContext>(
     "Host=ec2-52-3-2-245.compute-1.amazonaws.com;Database=dfb3jal2vndqcs;Username=kxqvynujktzpzv;Password=80e641f45400709629fdc0a0ba5366bcb6daa6329656fe954a69bcd7210b99e9"
@@ -36,7 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors();
 
