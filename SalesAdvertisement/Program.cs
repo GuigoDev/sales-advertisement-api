@@ -5,7 +5,6 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -18,9 +17,9 @@ builder.Services.AddControllers().AddJsonOptions(
     x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
 
-builder.Services.AddSqlite<DatabaseContext>("Data Source = ApiDatabase.db");
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddNpgsql<DatabaseContext>(
+    "YourConnectionString"
+);
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AdvertisementService>();
@@ -38,7 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors();
 

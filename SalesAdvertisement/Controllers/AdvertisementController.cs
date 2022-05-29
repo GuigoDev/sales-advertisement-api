@@ -16,6 +16,7 @@ public class AdvertisementController : ControllerBase
     }
 
     [HttpGet]
+    [Route("/")]
     public List<Advertisement> Get()
         => _advertisementService.GetAdvertisements();
 
