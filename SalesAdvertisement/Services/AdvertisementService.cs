@@ -60,7 +60,7 @@ public class AdvertisementService
             Title = advertisement.Title,
             Description = advertisement.Description,
             Price = advertisement.Price,
-            CreatedAt = DateTime.Now.Date,
+            CreatedAt = DateTime.UtcNow,
             UserId = owner.UserId,
             User = owner
         };
