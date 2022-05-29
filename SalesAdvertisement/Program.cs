@@ -18,7 +18,7 @@ builder.Services.AddControllers().AddJsonOptions(
 );
 
 builder.Services.AddNpgsql<DatabaseContext>(
-    "Host=ec2-52-3-2-245.compute-1.amazonaws.com;Database=dfb3jal2vndqcs;Username=kxqvynujktzpzv;Password=80e641f45400709629fdc0a0ba5366bcb6daa6329656fe954a69bcd7210b99e9"
+    "YourConnectionString"
 );
 
 builder.Services.AddScoped<UserService>();
