@@ -1,12 +1,14 @@
 API for advertisement platforms.
 
+Deploy on: https://sales-advertisement-api.herokuapp.com/
+
 <br/>
 
 Tecnologias ultilizadas:
   - .NET 6
   - ASP.NET Core
   - Entity Framework Core
-  - Microsoft SQL Server
+  - PostgreSQL
   <br/>
   <br/>
 Como usar?
