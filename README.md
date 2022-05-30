@@ -20,15 +20,13 @@ Como usar?
   <br/>
   3 - Execute no terminal: dotnet tool install --global dotnet-ef
   <br/>
-  4 - Atualize a string de conecção do SQL Server no arquivo Program.cs, na linha 22.
+  4 - Atualize a string de conecção do PostgreSQL no arquivo Program.cs, na linha 21.
   <br/>
-  5 - Gere as migrations com o comando: dotnet migrations add TestApi --context DatabaseContext
+  5 - Aplique as migrations no banco de dados com o comando: dotnet database update --context DatabaseContext
   <br/>
-  6 - Aplique as migrations no banco de dados com o comando: dotnet database update --context DatabaseContext
+  6 - Execute a api com o comando "dotnet watch" no VS Code ou Ctrl+F5 no Visual Studio.
   <br/>
-  7 - Execute a api com o comando "dotnet watch" no VS Code ou Ctrl+F5 no Visual Studio.
-  <br/>
-  8 - Voçê deve ver uma aba do navegador se abrir com o Swagger UI com várias informações da api.
+  7 - Voçê deve ver uma aba do navegador se abrir com o Swagger UI com várias informações da api.
   
   <br/>
   <br/>
