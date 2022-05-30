@@ -69,14 +69,20 @@ public class UserService
             Directory.GetCurrentDirectory(), $"Images{Path.DirectorySeparatorChar}{userToDelete.UserId}"
         );
 
-        IEnumerable<string> images = Directory.EnumerateFiles(imagesDirectory, "*");
-
-        foreach(string image in images)
+        if(Directory.Exists(imagesDirectory))
         {
-            File.Delete(image);
-        }
+            IEnumerable<string> images = Directory.EnumerateFiles(imagesDirectory, "*");
 
-        Directory.Delete(imagesDirectory);
+            foreach(string image in images)
+            {
+                File.Delete(image);
+            }
+
+            Directory.Delete(imagesDirectory);
+
+            _databaseContext.Users.Remove(userToDelete);
+            _databaseContext.SaveChanges();
+        }
 
         _databaseContext.Users.Remove(userToDelete);
         _databaseContext.SaveChanges();
