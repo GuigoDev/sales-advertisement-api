@@ -52,11 +52,9 @@ public class AdvertisementService
             image.CopyTo(stream);
         }
 
-        owner.Password = "";
-
         var newAdvertisement = new Advertisement
         {
-            Images = filePath,
+            Image = filePath,
             Title = advertisement.Title,
             Description = advertisement.Description,
             Price = advertisement.Price,
@@ -114,8 +112,13 @@ public class AdvertisementService
         if(advertisementToDelete is null)
             throw new NullReferenceException("Advertisement does not exists!");
 
-        
-        File.Delete(advertisementToDelete.Images);
+        if(advertisementToDelete.Image is not null)
+        {
+            File.Delete(advertisementToDelete.Image);
+
+            _databaseContext.Advertisements.Remove(advertisementToDelete);
+            _databaseContext.SaveChanges();
+        }
 
         _databaseContext.Advertisements.Remove(advertisementToDelete);
         _databaseContext.SaveChanges();
