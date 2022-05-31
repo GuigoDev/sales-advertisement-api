@@ -66,7 +66,7 @@ public class UserService
             throw new NullReferenceException("User does not exists!");
 
         var imagesDirectory = Path.Combine(
-            Directory.GetCurrentDirectory(), $"Images{Path.DirectorySeparatorChar}{userToDelete.UserId}"
+            Directory.GetCurrentDirectory(), $"Images/{Path.DirectorySeparatorChar}{userToDelete.UserId}"
         );
 
         if(Directory.Exists(imagesDirectory))
