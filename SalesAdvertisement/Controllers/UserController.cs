@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<User> GetUsers()
+    public IEnumerable<User> Get()
         => _userService.GetUsers();
 
     [HttpGet("{id}")]
@@ -31,7 +31,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    [Route("SignIn")]
+    [Route("register")]
     public IActionResult Create(User user)
     {
         var userToCreate = _userService.CreateUser(user);
