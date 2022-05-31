@@ -24,7 +24,7 @@ public class AdvertisementService
 
     public Advertisement? GetAdvertisement(int id)
     {
-       var announcement = _databaseContext.Advertisements.Find(id);
+       _databaseContext.Advertisements.Find(id);
 
         return _databaseContext.Advertisements
             .AsNoTracking()
@@ -42,19 +42,19 @@ public class AdvertisementService
         if (image is null)
             throw new NullReferenceException("No image to upload!");
 
-        var directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
-        var fullDirectoryPath = Path.Combine(directoryPath, $"{userId}");
-        Directory.CreateDirectory(fullDirectoryPath);
+        var imagesDirectory = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
+        var userImagesDirectory = Path.Combine(imagesDirectory, $"{userId}");
+        Directory.CreateDirectory(userImagesDirectory);
 
-        var filePath = Path.Combine(fullDirectoryPath, image.FileName);
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        var imagePath = Path.Combine(userImagesDirectory, image.FileName);
+        using (var stream = new FileStream(imagePath, FileMode.Create))
         {
             image.CopyTo(stream);
         }
 
         var newAdvertisement = new Advertisement
         {
-            Image = filePath,
+            Image = imagePath,
             Title = advertisement.Title,
             Description = advertisement.Description,
             Price = advertisement.Price,
