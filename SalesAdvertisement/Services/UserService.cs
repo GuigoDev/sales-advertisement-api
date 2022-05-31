@@ -28,8 +28,6 @@ public class UserService
     {
         _databaseContext.Users.Add(user);
         _databaseContext.SaveChanges();
-
-        user.Password = "";
         
         return user;
     }

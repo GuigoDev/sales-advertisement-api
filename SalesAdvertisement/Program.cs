@@ -43,7 +43,7 @@ app.UseCors();
 
 var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
 
-if(imagesPath is not null)
+if(!Directory.Exists(imagesPath))
 {
     Directory.CreateDirectory(imagesPath);
 }
