@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     [Route("register")]
     public IActionResult Create(User user)
     {
-        var userToCreate = _userService.CreateUser(user);
+        _userService.CreateUser(user);
         return CreatedAtAction(nameof(GetById), new { id = user!.UserId }, user);
     }
 
