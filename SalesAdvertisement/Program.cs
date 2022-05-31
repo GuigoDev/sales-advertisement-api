@@ -1,6 +1,7 @@
 using SalesAdvertisement.Data;
 using SalesAdvertisement.Services;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(
 );
 
 builder.Services.AddNpgsql<DatabaseContext>(
-    "YourConnectionString"
+    "Your connection string"
 );
 
 builder.Services.AddScoped<UserService>();
@@ -38,8 +39,20 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-
 app.UseCors();
+
+var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+
+if(imagesPath is not null)
+{
+    Directory.CreateDirectory(imagesPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesPath),
+    RequestPath = "/app/Images"
+});
 
 app.UseAuthorization();
 

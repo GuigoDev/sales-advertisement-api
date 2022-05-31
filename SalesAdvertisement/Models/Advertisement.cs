@@ -6,7 +6,7 @@ public class Advertisement
 {   
     public int AdvertisementId { get; set; }
 
-    public string? Images { get; set; }
+    public string? Image { get; set; }
 
     [MaxLength(60)]
     public string? Title { get; set; }
@@ -14,7 +14,7 @@ public class Advertisement
     [MaxLength(500)]
     public string? Description { get; set; }
 
-    public float Price { get; set; }
+    public decimal Price { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
