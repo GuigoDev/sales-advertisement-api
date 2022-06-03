@@ -1,8 +1,8 @@
-using SalesAdvertisement.Models;
-using SalesAdvertisement.Data;
 using Microsoft.EntityFrameworkCore;
+using SalesAdvertisementApi.Data;
+using SalesAdvertisementApi.Models;
 
-namespace SalesAdvertisement.Services;
+namespace SalesAdvertisementApi.Services;
 
 public class UserService
 {

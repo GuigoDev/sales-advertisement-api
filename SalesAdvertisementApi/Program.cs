@@ -1,5 +1,5 @@
-using SalesAdvertisement.Data;
-using SalesAdvertisement.Services;
+using SalesAdvertisementApi.Data;
+using SalesAdvertisementApi.Services;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 

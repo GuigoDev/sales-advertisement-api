@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace SalesAdvertisement.Models;
+namespace SalesAdvertisementApi.Models;
 
 public class User
 {   

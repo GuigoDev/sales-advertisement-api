@@ -1,7 +1,7 @@
-using SalesAdvertisement.Models;
 using Microsoft.EntityFrameworkCore;
+using SalesAdvertisementApi.Models;
 
-namespace SalesAdvertisement.Data;
+namespace SalesAdvertisementApi.Data;
 
 public class DatabaseContext : DbContext
 {

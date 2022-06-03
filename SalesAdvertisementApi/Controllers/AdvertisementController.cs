@@ -1,8 +1,8 @@
-using SalesAdvertisement.Models;
-using SalesAdvertisement.Services;
 using Microsoft.AspNetCore.Mvc;
+using SalesAdvertisementApi.Models;
+using SalesAdvertisementApi.Services;
 
-namespace SalesAdvertisement.Controllers;
+namespace SalesAdvertisementApi.Controllers;
 
 [ApiController]
 [Route("/[controller]")]
