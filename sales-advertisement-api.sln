@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAdvertisement", "SalesAdvertisement\SalesAdvertisement.csproj", "{2BB1B4C8-A6AC-4AC6-A906-2E1EAB7E7010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesAdvertisementApi", "SalesAdvertisementApi\SalesAdvertisementApi.csproj", "{2BB1B4C8-A6AC-4AC6-A906-2E1EAB7E7010}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

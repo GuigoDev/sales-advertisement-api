@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SalesAdvertisement.Models;
+namespace SalesAdvertisementApi.Models;
 
 public class Advertisement
 {   

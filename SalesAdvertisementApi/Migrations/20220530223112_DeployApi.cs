@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SalesAdvertisement.Migrations
+namespace SalesAdvertisementApi.Migrations
 {
     public partial class DeployApi : Migration
     {
