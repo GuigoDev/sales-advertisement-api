@@ -45,8 +45,10 @@ public class AdvertisementService
         var imagesDirectory = Path.Combine(_webHostEnvironment.ContentRootPath, "Images");
         var userImagesDirectory = Path.Combine(imagesDirectory, $"{userId}");
         Directory.CreateDirectory(userImagesDirectory);
-
-        var imagePath = Path.Combine(userImagesDirectory, image.FileName);
+        
+        var timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+        
+        var imagePath = Path.Combine(userImagesDirectory, $"{timestamp}-{image.FileName}");
         using (var stream = new FileStream(imagePath, FileMode.Create))
         {
             image.CopyTo(stream);
