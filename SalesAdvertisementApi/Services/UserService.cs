@@ -1,3 +1,5 @@
+using Amazon;
+using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using SalesAdvertisementApi.Data;
 using SalesAdvertisementApi.Models;
@@ -7,7 +9,13 @@ namespace SalesAdvertisementApi.Services;
 public class UserService
 {
     private readonly DatabaseContext _databaseContext;
-
+    
+    private readonly IAmazonS3 _client = new AmazonS3Client
+    (
+        new AwsS3BucketServices().Credentials, 
+        RegionEndpoint.USWest2
+    );
+    
     public UserService(DatabaseContext databaseContext)
     {
         _databaseContext = databaseContext;
@@ -26,6 +34,14 @@ public class UserService
 
     public async Task<User> CreateUserAsync(User user)
     {
+        var timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+        
+        var bucketName = $"{timestamp}-bucket";
+        
+        await AwsS3BucketServices.CreateBucketAsync(_client, bucketName);
+
+        user.BucketName = bucketName;
+        
         await _databaseContext.Users.AddAsync(user);
         await _databaseContext.SaveChangesAsync();
         
