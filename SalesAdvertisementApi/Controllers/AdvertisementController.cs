@@ -48,7 +48,6 @@ public class AdvertisementController : ControllerBase
         if(advertisementToUpdate is null)
             return NotFound();
         
-        
         await _advertisementService.UpdateAdvertisementAsync(id, advertisement);
         return NoContent();
     }
