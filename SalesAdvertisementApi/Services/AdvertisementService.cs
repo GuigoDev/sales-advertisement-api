@@ -14,27 +14,25 @@ public class AdvertisementService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public List<Advertisement> GetAdvertisements()
+    public async Task<List<Advertisement>> GetAdvertisementsAsync()
     {
-        return _databaseContext.Advertisements
+        return await _databaseContext.Advertisements
             .AsNoTracking()
             .Include(advertisement => advertisement.User)
-            .ToList();
+            .ToListAsync();
     }
 
-    public Advertisement? GetAdvertisement(int id)
+    public async Task<Advertisement?> GetAdvertisementAsync(int id)
     {
-       _databaseContext.Advertisements.Find(id);
-
-        return _databaseContext.Advertisements
+        return await _databaseContext.Advertisements
             .AsNoTracking()
             .Include(advertisement => advertisement.User)
-            .SingleOrDefault(advertisement => advertisement.AdvertisementId == id);
+            .SingleOrDefaultAsync(advertisement => advertisement.AdvertisementId == id);
     }
 
-    public Advertisement CreateAdvertisement(IFormFile image, Advertisement advertisement, int userId)
+    public async Task<Advertisement> CreateAdvertisementAsync(IFormFile image, Advertisement advertisement, int userId)
     {   
-        var owner = _databaseContext.Users.Find(userId);
+        var owner = await _databaseContext.Users.FindAsync(userId);
         
         if(owner is null)
             throw new NullReferenceException("User does not exists!");
@@ -49,9 +47,9 @@ public class AdvertisementService
         var timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         
         var imagePath = Path.Combine(userImagesDirectory, $"{timestamp}-{image.FileName}");
-        using (var stream = new FileStream(imagePath, FileMode.Create))
+        await using (var stream = new FileStream(imagePath, FileMode.Create))
         {
-            image.CopyTo(stream);
+            await image.CopyToAsync(stream);
         }
 
         var newAdvertisement = new Advertisement
@@ -65,15 +63,15 @@ public class AdvertisementService
             User = owner
         };
         
-        _databaseContext.Advertisements.Add(newAdvertisement);
-        _databaseContext.SaveChanges();
+        await _databaseContext.Advertisements.AddAsync(newAdvertisement);
+        await _databaseContext.SaveChangesAsync();
 
         return newAdvertisement;
     }
 
-    public void UpdateAdvertisement(int id, Advertisement advertisement)
+    public async Task UpdateAdvertisementAsync(int id, Advertisement advertisement)
     {
-        var advertisementToUpdate = _databaseContext.Advertisements.Find(id);
+        var advertisementToUpdate = await _databaseContext.Advertisements.FindAsync(id);
 
         if(advertisementToUpdate is null)
             throw new NullReferenceException("Advertisement does not exists!");
@@ -88,28 +86,28 @@ public class AdvertisementService
             advertisementToUpdate.Description = description;
             advertisementToUpdate.Price = price;
 
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
         else if(title is not null)
         {
             advertisementToUpdate.Title = title;
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
         else if(description is not null)
         {
             advertisementToUpdate.Description = description;
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
         else if(price != advertisementToUpdate.Price)
         {
             advertisementToUpdate.Price = price;
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
     }
 
-    public void DeleteAdvertisement(int id)
+    public async Task DeleteAdvertisementAsync(int id)
     {
-        var advertisementToDelete = _databaseContext.Advertisements.Find(id);
+        var advertisementToDelete = await _databaseContext.Advertisements.FindAsync(id);
 
         if(advertisementToDelete is null)
             throw new NullReferenceException("Advertisement does not exists!");
@@ -119,10 +117,10 @@ public class AdvertisementService
             File.Delete(advertisementToDelete.Image);
 
             _databaseContext.Advertisements.Remove(advertisementToDelete);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
 
         _databaseContext.Advertisements.Remove(advertisementToDelete);
-        _databaseContext.SaveChanges();
+        await _databaseContext.SaveChangesAsync();
     }
 }
