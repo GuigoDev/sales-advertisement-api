@@ -68,9 +68,6 @@ namespace SalesAdvertisementApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("BucketName")
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
                         .HasColumnType("text");
 

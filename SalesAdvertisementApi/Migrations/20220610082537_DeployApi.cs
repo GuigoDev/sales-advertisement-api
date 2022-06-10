@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SalesAdvertisementApi.Migrations
 {
-    public partial class TesteDB : Migration
+    public partial class DeployApi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,10 +31,11 @@ namespace SalesAdvertisementApi.Migrations
                 {
                     AdvertisementId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Images = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    ImageName = table.Column<string>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: true),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    Price = table.Column<float>(type: "real", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
