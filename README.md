@@ -1,6 +1,6 @@
-API for advertisement platforms.
+Api para para plataformas de anúncios de vendas.
 
-Deploy on: https://sales-advertisement-api.herokuapp.com/
+Publicado em: https://sales-advertisement-api.herokuapp.com/advertisement/
 
 <br/>
 
@@ -31,21 +31,45 @@ Como usar?
   
   <br/>
   <br/>
+
+Rotas:
+  - Buscar todos os usuários: https://sales-advertisement-api.herokuapp.com/User
+  - Buscar um único usuário ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/User/1
+  - Criar um novo usuário: https://sales-advertisement-api.herokuapp.com/User/register
+ 
+        Dados para criar um novo usuário: 
+            
+            Name: string
+            Email: string
+            Password: string
+            
+  - Atualizar um novo usuário ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/User/1
   
- Dados para criar um novo usuário: 
-    <br/>
-    Name: string
-    <br/>
-    Email: string
-    <br/>
-    Password: string
+        Dados atualizáveis de um usuário:
+                  
+                  Email: string
+                  Password: string
+                  
+  - Deletar um usuário ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/User/1
+
+  - Buscar todos os anúncios: https://sales-advertisement-api.herokuapp.com/advertisement/
+  - Buscar um único anúncio ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/advertisement/1
+  - Criar um novo anúncio: https://sales-advertisement-api.herokuapp.com/advertisement/Create
     
-Dados ao criar um novo anúncio:
-    <br/>
-    Title: string
-    <br/>
-    Description: string
-    <br/>
-    Price: float
-    <br/>
-    userId: int (no cabeçalho da rota (header))
+        Dados ao criar um novo anúncio:
+            
+            Image: file
+            Title: string
+            Description: string
+            Price: float
+            userId: int (no cabeçalho da rota (header))
+            
+   - Atualizar um anúncio ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/Advertisement/1
+  
+          Dados atualizáveis de um anúncio:
+            
+            Title: string
+            Description: string
+            Price: float
+            
+   - Deletar um anúncio ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/advertisement/1
