@@ -15,6 +15,8 @@ public class UserService
         new AwsS3BucketServices().Credentials, 
         RegionEndpoint.USWest2
     );
+
+    private readonly string _bucketName = new AwsS3BucketServices().BucketName;
     
     public UserService(DatabaseContext databaseContext)
     {
@@ -34,14 +36,6 @@ public class UserService
 
     public async Task<User> CreateUserAsync(User user)
     {
-        var timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-        
-        var bucketName = $"{timestamp}-bucket";
-        
-        await AwsS3BucketServices.CreateBucketAsync(_client, bucketName);
-
-        user.BucketName = bucketName;
-        
         await _databaseContext.Users.AddAsync(user);
         await _databaseContext.SaveChangesAsync();
         
@@ -78,19 +72,9 @@ public class UserService
 
         if(userToDelete is null)
             throw new NullReferenceException("User does not exists!");
-
-        await AwsS3BucketServices.DeleteBucketContentsAsync
-        (
-            _client,
-            $"{userToDelete.BucketName}"
-        );
         
-        await AwsS3BucketServices.DeleteBucketAsync
-        (
-            _client, 
-            $"{userToDelete.BucketName}"
-        );
-
+        await AwsS3BucketServices.DeleteUserFoldAsync(_client, _bucketName, userToDelete.UserId);
+        
         _databaseContext.Users.Remove(userToDelete);
         await _databaseContext.SaveChangesAsync();
     }

@@ -7,46 +7,17 @@ namespace SalesAdvertisementApi.Services;
 public class AwsS3BucketServices
 {
     public readonly BasicAWSCredentials Credentials = new BasicAWSCredentials(
-        accessKey: "Acess Key", secretKey: "Secret Key");
-    
-    public static async Task<bool> CreateBucketAsync(IAmazonS3 client, string bucketName)
-    {
-        try
-        {
-            var request = new PutBucketRequest
-            {
-                BucketName = bucketName,
-                UseClientRegion = true
-            };
+        accessKey: "access key", secretKey: "secret key");
 
-            var response = await client.PutBucketAsync(request);
-            return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
-        }
-        catch (AmazonS3Exception exception)
-        {
-            Console.WriteLine($"Error creating bucket: {exception}");
-            return false;
-        }
-    }
-
-    public static async Task<bool> DeleteBucketAsync(IAmazonS3 client, string bucketName)
-    {
-        var request = new DeleteBucketRequest
-        {
-            BucketName = bucketName,
-        };
-
-        var response = await client.DeleteBucketAsync(request);
-        return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
-    }
+    public readonly string BucketName = "sales-advertisement-api";
     
     public static async Task<bool> UploadFileAsync(
-        IAmazonS3 client, string bucketName, string objectName, string filePath)
+        IAmazonS3 client, string bucketName, int userId, string objectName, string filePath)
     {
         var request = new PutObjectRequest
         {
             BucketName = bucketName,
-            Key = objectName,
+            Key = $"advertisement-images/{userId}/{objectName}",
             FilePath = filePath
         };
 
@@ -64,12 +35,12 @@ public class AwsS3BucketServices
         }
     }
 
-    public static async Task AddAclToExistingObjectAsync(IAmazonS3 client, string bucketName, string keyName)
+    public static async Task AddAclToExistingObjectAsync(IAmazonS3 client, string bucketName, int userId, string keyName)
     {
         GetACLResponse aclResponse = await client.GetACLAsync(new GetACLRequest
         {
             BucketName = bucketName,
-            Key = keyName
+            Key = $"advertisement-images/{userId}/{keyName}"
         });
 
         S3AccessControlList acl = aclResponse.AccessControlList;
@@ -91,38 +62,48 @@ public class AwsS3BucketServices
         _ = await client.PutACLAsync(new PutACLRequest
         {
             BucketName = bucketName,
-            Key = keyName,
+            Key = $"advertisement-images/{userId}/{keyName}",
             AccessControlList = newAcl
         });
     }
 
-    public static async Task<bool> DeleteBucketContentsAsync(IAmazonS3 client, string bucketName)
+    public static async Task DeleteImageAsync(IAmazonS3 client, string bucketName, int userId, string keyName)
     {
-        var request = new ListObjectsV2Request { BucketName = bucketName };
-
-        try
+        await client.DeleteObjectAsync(new DeleteObjectRequest()
         {
-            var response = await client.ListObjectsV2Async(request);
-
-            do
-            {
-                response.S3Objects
-                    .ForEach(async obj => await client.DeleteObjectAsync(bucketName, obj.Key));
-
-                request.ContinuationToken = response.NextContinuationToken;
-            } while (response.IsTruncated);
-
-            return true;
-        }
-        catch (AmazonClientException exception)
-        {
-            Console.WriteLine($"Error deleting objects: {exception}");
-            return false;
-        }
+            BucketName = bucketName, 
+            Key = $"advertisement-images/{userId}/{keyName}"
+        });
     }
 
-    public static async Task DeleteBucketContentAsync(IAmazonS3 client, string bucketName, string keyName)
+    public static async Task DeleteUserFoldAsync(IAmazonS3 client, string bucketName, int userId)
     {
-        await client.DeleteObjectAsync(new DeleteObjectRequest() { BucketName = bucketName, Key = keyName });
+        var request = new ListObjectsV2Request
+        {
+            BucketName = bucketName,
+            Prefix = $"advertisement-images/{userId}/"
+        };
+
+        var response = await client.ListObjectsV2Async(request);
+
+        foreach (S3Object obj in response.S3Objects)
+        {
+            var image = obj.Key;
+            
+            var fileDeleteRequest = new DeleteObjectRequest()
+            {
+                BucketName = bucketName,
+                Key = image
+            };
+            
+            await client.DeleteObjectAsync(fileDeleteRequest);
+        }
+
+        var folderDeleteRequest = new DeleteObjectRequest()
+        {
+            BucketName = bucketName,
+            Key = $"advertisement-images/{userId}/"
+        };
+        await client.DeleteObjectAsync(folderDeleteRequest);
     }
 }

@@ -17,6 +17,8 @@ public class AdvertisementService
         RegionEndpoint.USWest2
     );
 
+    private readonly string _bucketName = new AwsS3BucketServices().BucketName;
+
     public AdvertisementService(DatabaseContext databaseContext, IWebHostEnvironment webHostEnvironment)
     {
         _databaseContext = databaseContext;
@@ -66,15 +68,17 @@ public class AdvertisementService
         await AwsS3BucketServices.UploadFileAsync
         (
             _client, 
-            $"{owner.BucketName}", 
-            imageName, 
+            _bucketName,
+            owner.UserId,
+            imageName,
             imagePath
         );
         
         await AwsS3BucketServices.AddAclToExistingObjectAsync
         (
             _client, 
-            $"{owner.BucketName}",
+            _bucketName,
+            owner.UserId,
             imageName
         );
         
@@ -82,7 +86,7 @@ public class AdvertisementService
         
         var newAdvertisement = new Advertisement
         {
-            ImageUrl = $"https://{owner.BucketName}.s3.us-west-2.amazonaws.com/{timestamp}-{image.FileName}",
+            ImageUrl = $"https://{_bucketName}.s3.us-west-2.amazonaws.com/advertisement-images/{owner.UserId}/{imageName}",
             ImageName = imageName,
             Title = advertisement.Title,
             Description = advertisement.Description,
@@ -141,14 +145,14 @@ public class AdvertisementService
         
         if(advertisementToDelete is null)
             throw new NullReferenceException("Advertisement does not exists!");
-
-        var bucketName = owner.BucketName;
+        
         var keyName = advertisementToDelete.ImageName;
         
-        await AwsS3BucketServices.DeleteBucketContentAsync
+        await AwsS3BucketServices.DeleteImageAsync
         (
             _client,
-            bucketName,
+            _bucketName,
+            owner.UserId,
             keyName
         );
         

@@ -14,8 +14,6 @@ public class User
     [MaxLength(30)]
     [JsonIgnore]
     public string? Password { get; set; }
-    
-    public string? BucketName { get; set; }
-    
+
     public List<Advertisement>? Advertisements { get; set; }
 }
