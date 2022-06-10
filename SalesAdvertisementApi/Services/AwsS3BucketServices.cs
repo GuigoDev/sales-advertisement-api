@@ -7,7 +7,7 @@ namespace SalesAdvertisementApi.Services;
 public class AwsS3BucketServices
 {
     public readonly BasicAWSCredentials Credentials = new BasicAWSCredentials(
-        accessKey: "AKIA5XPUK65OCFH7KC5R", secretKey: "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");
+        accessKey: "Acess Key", secretKey: "Secret Key");
     
     public static async Task<bool> CreateBucketAsync(IAmazonS3 client, string bucketName)
     {
