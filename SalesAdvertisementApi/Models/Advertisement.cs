@@ -6,7 +6,9 @@ public class Advertisement
 {   
     public int AdvertisementId { get; set; }
 
-    public string? Image { get; set; }
+    public string? ImageUrl { get; set; }
+    
+    public string? ImageName { get; set;  }
 
     [MaxLength(60)]
     public string? Title { get; set; }

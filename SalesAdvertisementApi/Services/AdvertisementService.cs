@@ -1,3 +1,5 @@
+using Amazon;
+using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using SalesAdvertisementApi.Data;
 using SalesAdvertisementApi.Models;
@@ -8,33 +10,38 @@ public class AdvertisementService
 {
     private readonly DatabaseContext _databaseContext;
     private readonly IWebHostEnvironment _webHostEnvironment;
+
+    private readonly IAmazonS3 _client = new AmazonS3Client
+    (
+        new AwsS3BucketServices().Credentials,
+        RegionEndpoint.USWest2
+    );
+
     public AdvertisementService(DatabaseContext databaseContext, IWebHostEnvironment webHostEnvironment)
     {
         _databaseContext = databaseContext;
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public List<Advertisement> GetAdvertisements()
+    public async Task<List<Advertisement>> GetAdvertisementsAsync()
     {
-        return _databaseContext.Advertisements
+        return await _databaseContext.Advertisements
             .AsNoTracking()
             .Include(advertisement => advertisement.User)
-            .ToList();
+            .ToListAsync();
     }
 
-    public Advertisement? GetAdvertisement(int id)
+    public async Task<Advertisement?> GetAdvertisementAsync(int id)
     {
-       _databaseContext.Advertisements.Find(id);
-
-        return _databaseContext.Advertisements
+        return await _databaseContext.Advertisements
             .AsNoTracking()
             .Include(advertisement => advertisement.User)
-            .SingleOrDefault(advertisement => advertisement.AdvertisementId == id);
+            .SingleOrDefaultAsync(advertisement => advertisement.AdvertisementId == id);
     }
 
-    public Advertisement CreateAdvertisement(IFormFile image, Advertisement advertisement, int userId)
+    public async Task<Advertisement> CreateAdvertisementAsync(IFormFile image, Advertisement advertisement, int userId)
     {   
-        var owner = _databaseContext.Users.Find(userId);
+        var owner = await _databaseContext.Users.FindAsync(userId);
         
         if(owner is null)
             throw new NullReferenceException("User does not exists!");
@@ -48,15 +55,35 @@ public class AdvertisementService
         
         var timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         
-        var imagePath = Path.Combine(userImagesDirectory, $"{timestamp}-{image.FileName}");
-        using (var stream = new FileStream(imagePath, FileMode.Create))
+        var imageName = $"{timestamp}-{image.FileName}";
+        
+        var imagePath = Path.Combine(userImagesDirectory, imageName);
+        await using (var stream = new FileStream(imagePath, FileMode.Create))
         {
-            image.CopyTo(stream);
+            await image.CopyToAsync(stream);
         }
 
+        await AwsS3BucketServices.UploadFileAsync
+        (
+            _client, 
+            $"{owner.BucketName}", 
+            imageName, 
+            imagePath
+        );
+        
+        await AwsS3BucketServices.AddAclToExistingObjectAsync
+        (
+            _client, 
+            $"{owner.BucketName}",
+            imageName
+        );
+        
+        File.Delete($"{imagePath}");
+        
         var newAdvertisement = new Advertisement
         {
-            Image = imagePath,
+            ImageUrl = $"https://{owner.BucketName}.s3.us-west-2.amazonaws.com/{timestamp}-{image.FileName}",
+            ImageName = imageName,
             Title = advertisement.Title,
             Description = advertisement.Description,
             Price = advertisement.Price,
@@ -65,15 +92,15 @@ public class AdvertisementService
             User = owner
         };
         
-        _databaseContext.Advertisements.Add(newAdvertisement);
-        _databaseContext.SaveChanges();
+        await _databaseContext.Advertisements.AddAsync(newAdvertisement);
+        await _databaseContext.SaveChangesAsync();
 
         return newAdvertisement;
     }
 
-    public void UpdateAdvertisement(int id, Advertisement advertisement)
+    public async Task UpdateAdvertisementAsync(int id, Advertisement advertisement)
     {
-        var advertisementToUpdate = _databaseContext.Advertisements.Find(id);
+        var advertisementToUpdate = await _databaseContext.Advertisements.FindAsync(id);
 
         if(advertisementToUpdate is null)
             throw new NullReferenceException("Advertisement does not exists!");
@@ -88,41 +115,44 @@ public class AdvertisementService
             advertisementToUpdate.Description = description;
             advertisementToUpdate.Price = price;
 
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
         else if(title is not null)
         {
             advertisementToUpdate.Title = title;
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
         else if(description is not null)
         {
             advertisementToUpdate.Description = description;
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
         else if(price != advertisementToUpdate.Price)
         {
             advertisementToUpdate.Price = price;
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
     }
 
-    public void DeleteAdvertisement(int id)
+    public async Task DeleteAdvertisementAsync(int id)
     {
-        var advertisementToDelete = _databaseContext.Advertisements.Find(id);
-
+        var advertisementToDelete = await _databaseContext.Advertisements.FindAsync(id);
+        var owner = await _databaseContext.Users.FindAsync(advertisementToDelete.UserId);
+        
         if(advertisementToDelete is null)
             throw new NullReferenceException("Advertisement does not exists!");
 
-        if(advertisementToDelete.Image is not null)
-        {
-            File.Delete(advertisementToDelete.Image);
-
-            _databaseContext.Advertisements.Remove(advertisementToDelete);
-            _databaseContext.SaveChanges();
-        }
-
+        var bucketName = owner.BucketName;
+        var keyName = advertisementToDelete.ImageName;
+        
+        await AwsS3BucketServices.DeleteBucketContentAsync
+        (
+            _client,
+            bucketName,
+            keyName
+        );
+        
         _databaseContext.Advertisements.Remove(advertisementToDelete);
-        _databaseContext.SaveChanges();
+        await _databaseContext.SaveChangesAsync();
     }
 }

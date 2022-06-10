@@ -16,14 +16,13 @@ public class AdvertisementController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/")]
-    public List<Advertisement> Get()
-        => _advertisementService.GetAdvertisements();
+    public async Task<List<Advertisement>> Get()
+        => await _advertisementService.GetAdvertisementsAsync();
 
     [HttpGet("{id}")]
-    public ActionResult<Advertisement> GetById(int id)
+    public async Task<ActionResult<Advertisement>> GetById(int id)
     {
-        var advertisement = _advertisementService.GetAdvertisement(id);
+        var advertisement = await _advertisementService.GetAdvertisementAsync(id);
 
         if(advertisement is not null)
             return advertisement;
@@ -32,40 +31,37 @@ public class AdvertisementController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public IActionResult Create([FromForm] IFormFile image, [FromForm] Advertisement advertisement, [FromHeader] int userId)
+    public async Task<IActionResult> Create(
+        [FromForm] IFormFile image, [FromForm] Advertisement advertisement, [FromHeader] int userId)
     {
-        var newAdvertisement = _advertisementService.CreateAdvertisement(image, advertisement, userId);
+        var newAdvertisement = await _advertisementService.CreateAdvertisementAsync(image, advertisement, userId);
 
         return CreatedAtAction(
-            nameof(GetById), new { id = newAdvertisement!.AdvertisementId }, newAdvertisement
+            nameof(GetById), new { id = newAdvertisement.AdvertisementId }, newAdvertisement
         );
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, Advertisement advertisement)
+    public async Task<IActionResult> Update(int id, Advertisement advertisement)
     {
-        var advertisementToUpdate = _advertisementService.GetAdvertisement(id);
+        var advertisementToUpdate = await _advertisementService.GetAdvertisementAsync(id);
 
-        if(advertisementToUpdate is not null)
-        {
-            _advertisementService.UpdateAdvertisement(id, advertisement);
-            return NoContent();
-        }
-        else
+        if(advertisementToUpdate is null)
             return NotFound();
+        
+        await _advertisementService.UpdateAdvertisementAsync(id, advertisement);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var advertisementToDelete = _advertisementService.GetAdvertisement(id);
+        var advertisementToDelete = await _advertisementService.GetAdvertisementAsync(id);
 
-        if(advertisementToDelete is not null)
-        {
-            _advertisementService.DeleteAdvertisement(id);
-            return NoContent();
-        }
+        if(advertisementToDelete is null)
+            return NotFound();
         
-        return NotFound();
+        await _advertisementService.DeleteAdvertisementAsync(id);
+        return NoContent();
     }
 }
