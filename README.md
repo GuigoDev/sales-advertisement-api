@@ -9,6 +9,7 @@ Tecnologias ultilizadas:
   - ASP.NET Core
   - Entity Framework Core
   - PostgreSQL
+  - AWS S3
   <br/>
   <br/>
 Como usar?
