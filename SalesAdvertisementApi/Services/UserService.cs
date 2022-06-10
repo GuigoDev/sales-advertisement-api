@@ -79,24 +79,17 @@ public class UserService
         if(userToDelete is null)
             throw new NullReferenceException("User does not exists!");
 
-        var imagesDirectory = Path.Combine(
-            Directory.GetCurrentDirectory(), $"Images/{Path.DirectorySeparatorChar}{userToDelete.UserId}"
+        await AwsS3BucketServices.DeleteBucketContentsAsync
+        (
+            _client,
+            $"{userToDelete.BucketName}"
         );
-
-        if(Directory.Exists(imagesDirectory))
-        {
-            IEnumerable<string> images = Directory.EnumerateFiles(imagesDirectory, "*");
-
-            foreach(string image in images)
-            {
-                File.Delete(image);
-            }
-
-            Directory.Delete(imagesDirectory);
-
-            _databaseContext.Users.Remove(userToDelete);
-            await _databaseContext.SaveChangesAsync();
-        }
+        
+        await AwsS3BucketServices.DeleteBucketAsync
+        (
+            _client, 
+            $"{userToDelete.BucketName}"
+        );
 
         _databaseContext.Users.Remove(userToDelete);
         await _databaseContext.SaveChangesAsync();

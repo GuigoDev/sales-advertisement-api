@@ -1,3 +1,5 @@
+using Amazon;
+using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using SalesAdvertisementApi.Data;
 using SalesAdvertisementApi.Models;
@@ -8,6 +10,13 @@ public class AdvertisementService
 {
     private readonly DatabaseContext _databaseContext;
     private readonly IWebHostEnvironment _webHostEnvironment;
+
+    private readonly IAmazonS3 _client = new AmazonS3Client
+    (
+        new AwsS3BucketServices().Credentials,
+        RegionEndpoint.USWest2
+    );
+
     public AdvertisementService(DatabaseContext databaseContext, IWebHostEnvironment webHostEnvironment)
     {
         _databaseContext = databaseContext;
@@ -46,15 +55,35 @@ public class AdvertisementService
         
         var timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         
-        var imagePath = Path.Combine(userImagesDirectory, $"{timestamp}-{image.FileName}");
+        var imageName = $"{timestamp}-{image.FileName}";
+        
+        var imagePath = Path.Combine(userImagesDirectory, imageName);
         await using (var stream = new FileStream(imagePath, FileMode.Create))
         {
             await image.CopyToAsync(stream);
         }
 
+        await AwsS3BucketServices.UploadFileAsync
+        (
+            _client, 
+            $"{owner.BucketName}", 
+            imageName, 
+            imagePath
+        );
+        
+        await AwsS3BucketServices.AddAclToExistingObjectAsync
+        (
+            _client, 
+            $"{owner.BucketName}",
+            imageName
+        );
+        
+        File.Delete($"{imagePath}");
+        
         var newAdvertisement = new Advertisement
         {
-            Image = imagePath,
+            ImageUrl = $"https://{owner.BucketName}.s3.us-west-2.amazonaws.com/{timestamp}-{image.FileName}",
+            ImageName = imageName,
             Title = advertisement.Title,
             Description = advertisement.Description,
             Price = advertisement.Price,
@@ -108,18 +137,21 @@ public class AdvertisementService
     public async Task DeleteAdvertisementAsync(int id)
     {
         var advertisementToDelete = await _databaseContext.Advertisements.FindAsync(id);
-
+        var owner = await _databaseContext.Users.FindAsync(advertisementToDelete.UserId);
+        
         if(advertisementToDelete is null)
             throw new NullReferenceException("Advertisement does not exists!");
 
-        if(advertisementToDelete.Image is not null)
-        {
-            File.Delete(advertisementToDelete.Image);
-
-            _databaseContext.Advertisements.Remove(advertisementToDelete);
-            await _databaseContext.SaveChangesAsync();
-        }
-
+        var bucketName = owner.BucketName;
+        var keyName = advertisementToDelete.ImageName;
+        
+        await AwsS3BucketServices.DeleteBucketContentAsync
+        (
+            _client,
+            bucketName,
+            keyName
+        );
+        
         _databaseContext.Advertisements.Remove(advertisementToDelete);
         await _databaseContext.SaveChangesAsync();
     }
