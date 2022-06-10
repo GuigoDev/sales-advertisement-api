@@ -31,7 +31,8 @@ public class AdvertisementController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Create([FromForm] IFormFile image, [FromForm] Advertisement advertisement, [FromHeader] int userId)
+    public async Task<IActionResult> Create(
+        [FromForm] IFormFile image, [FromForm] Advertisement advertisement, [FromHeader] int userId)
     {
         var newAdvertisement = await _advertisementService.CreateAdvertisementAsync(image, advertisement, userId);
 
