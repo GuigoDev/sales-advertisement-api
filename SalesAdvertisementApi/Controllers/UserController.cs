@@ -16,13 +16,13 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<User> Get()
-        => _userService.GetUsers();
+    public async Task<IEnumerable<User>> Get()
+        => await _userService.GetUsersAsync();
 
     [HttpGet("{id}")]
-    public ActionResult<User> GetById(int id)
+    public async Task<ActionResult<User>> GetById(int id)
     {
-        var user = _userService.GetUserById(id);
+        var user = await _userService.GetUserByIdAsync(id);
 
         if(user is not null)
             return user;
@@ -32,37 +32,33 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("register")]
-    public IActionResult Create(User user)
+    public async Task<IActionResult> Create(User user)
     {
-        _userService.CreateUser(user);
-        return CreatedAtAction(nameof(GetById), new { id = user!.UserId }, user);
+        await _userService.CreateUserAsync(user);
+        return CreatedAtAction(nameof(GetById), new { id = user.UserId }, user);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, User user)
+    public async Task<IActionResult> Update(int id, User user)
     {
-        var userToUpdate = _userService.GetUserById(id);
+        var userToUpdate = await _userService.GetUserByIdAsync(id);
 
-        if(userToUpdate is not null)
-        {
-            _userService.UpdateUser(id, user);
-            return NoContent();
-        }
+        if(userToUpdate is null)
+            return NotFound("User does not exists!");
         
-        return NotFound("User does not exists!");
+        await _userService.UpdateUserAsync(id, user);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var userToDelete = _userService.GetUserById(id);
+        var userToDelete = await _userService.GetUserByIdAsync(id);
 
-        if(userToDelete is not null)
-        {
-            _userService.DeleteUser(id);
-            return NoContent();
-        }
-
-        return NotFound("User does not exists!");
+        if(userToDelete is null)
+            return NotFound("User does not exists!");
+        
+        await _userService.DeleteUserAsync(id);
+        return NoContent();
     }
 }
