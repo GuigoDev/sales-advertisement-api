@@ -34,6 +34,18 @@ public class UserService
             .SingleOrDefaultAsync(user => user.UserId == id);
     }
 
+    public async Task<bool> GetUserByEmailAsync(string email)
+    {
+        var userEmail = await _databaseContext.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(user => user.Email == email);
+
+        if (userEmail is null)
+            return false;
+
+        return true;
+    }
+
     public async Task<User> CreateUserAsync(User user)
     {
         await _databaseContext.Users.AddAsync(user);
@@ -48,7 +60,8 @@ public class UserService
 
         if(userToUpdate is null)
             throw new NullReferenceException("User does not exists!");
-        else if(user.Email is not null && user.Password is not null)
+        
+        if(user.Email is not null && user.Password is not null)
         {
             userToUpdate.Email = user.Email;
             userToUpdate.Password = user.Password;
