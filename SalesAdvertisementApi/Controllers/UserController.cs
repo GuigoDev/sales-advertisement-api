@@ -34,6 +34,11 @@ public class UserController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Create(User user)
     {
+        var userEmail = await _userService.GetUserByEmailAsync($"{user.Email}");
+
+        if (userEmail)
+            return BadRequest("This email has already been registered.");
+        
         await _userService.CreateUserAsync(user);
         return CreatedAtAction(nameof(GetById), new { id = user.UserId }, user);
     }
