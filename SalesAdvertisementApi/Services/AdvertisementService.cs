@@ -148,7 +148,7 @@ public class AdvertisementService
         
         var keyName = advertisementToDelete.ImageName;
         
-        await AwsS3BucketServices.DeleteImageAsync
+        await AwsS3BucketServices.DeleteObjectAsync
         (
             _client,
             _bucketName,
