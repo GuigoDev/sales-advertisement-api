@@ -86,8 +86,22 @@ public class UserService
         if(userToDelete is null)
             throw new NullReferenceException("User does not exists!");
         
-        await AwsS3BucketServices.DeleteUserFoldAsync(_client, _bucketName, userToDelete.UserId);
+        var userImages = await AwsS3BucketServices.ListObjectsAsync(_client, _bucketName, userToDelete.UserId);
+        var count = 0;
+
+        foreach (var image in userImages.S3Objects)
+        {
+            count++;
+        }
         
+        if (count > 0)
+        {
+            await AwsS3BucketServices.DeleteUserFoldAsync(_client, _bucketName, userToDelete.UserId);
+            
+            _databaseContext.Users.Remove(userToDelete);
+            await _databaseContext.SaveChangesAsync();
+        }
+
         _databaseContext.Users.Remove(userToDelete);
         await _databaseContext.SaveChangesAsync();
     }
