@@ -1,3 +1,4 @@
+using System.Collections;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -67,7 +68,20 @@ public class AwsS3BucketServices
         });
     }
 
-    public static async Task DeleteImageAsync(IAmazonS3 client, string bucketName, int userId, string keyName)
+    public static async Task<ListObjectsV2Response> ListObjectsAsync(IAmazonS3 client, string bucketName, int userId)
+    {
+        var request = new ListObjectsV2Request
+        {
+            BucketName = bucketName,
+            Prefix = $"advertisement-images/{userId}/"
+        };
+
+        var response = await client.ListObjectsV2Async(request);
+        
+        return response;
+    }
+    
+    public static async Task DeleteObjectAsync(IAmazonS3 client, string bucketName, int userId, string keyName)
     {
         await client.DeleteObjectAsync(new DeleteObjectRequest()
         {
@@ -78,15 +92,9 @@ public class AwsS3BucketServices
 
     public static async Task DeleteUserFoldAsync(IAmazonS3 client, string bucketName, int userId)
     {
-        var request = new ListObjectsV2Request
-        {
-            BucketName = bucketName,
-            Prefix = $"advertisement-images/{userId}/"
-        };
+        var objects = await ListObjectsAsync(client, bucketName, userId);
 
-        var response = await client.ListObjectsV2Async(request);
-
-        foreach (S3Object obj in response.S3Objects)
+        foreach (var obj in objects.S3Objects)
         {
             var image = obj.Key;
             
