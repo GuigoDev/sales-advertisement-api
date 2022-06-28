@@ -33,9 +33,9 @@ Como usar?
   <br/>
 
 Rotas:
-  - Buscar todos os usuários: https://sales-advertisement-api.herokuapp.com/User
-  - Buscar um único usuário ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/User/1
-  - Criar um novo usuário: https://sales-advertisement-api.herokuapp.com/User/register
+  - Buscar todos os usuários: /user
+  - Buscar um único usuário ultilizando seu id (ex: 1): /user/1
+  - Criar um novo usuário: /user/register
  
         Dados para criar um novo usuário: 
             
@@ -43,18 +43,18 @@ Rotas:
             Email: string
             Password: string
             
-  - Atualizar um novo usuário ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/User/1
+  - Atualizar um novo usuário ultilizando seu id (ex: 1): /user/1
   
         Dados atualizáveis de um usuário:
                   
                   Email: string
                   Password: string
                   
-  - Deletar um usuário ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/User/1
+  - Deletar um usuário ultilizando seu id (ex: 1): /user/1
 
-  - Buscar todos os anúncios: https://sales-advertisement-api.herokuapp.com/advertisement/
-  - Buscar um único anúncio ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/advertisement/1
-  - Criar um novo anúncio: https://sales-advertisement-api.herokuapp.com/advertisement/Create
+  - Buscar todos os anúncios: /advertisement/
+  - Buscar um único anúncio ultilizando seu id (ex: 1): /advertisement/1
+  - Criar um novo anúncio: /advertisement/create
     
         Dados ao criar um novo anúncio:
             
@@ -64,7 +64,7 @@ Rotas:
             Price: float
             userId: int (no cabeçalho da rota (header))
             
-   - Atualizar um anúncio ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/Advertisement/1
+   - Atualizar um anúncio ultilizando seu id (ex: 1): /advertisement/1
   
           Dados atualizáveis de um anúncio:
             
@@ -72,4 +72,4 @@ Rotas:
             Description: string
             Price: float
             
-   - Deletar um anúncio ultilizando seu id (ex: 1): https://sales-advertisement-api.herokuapp.com/advertisement/1
+   - Deletar um anúncio ultilizando seu id (ex: 1): /advertisement/1
