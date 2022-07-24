@@ -9,7 +9,10 @@ public class AwsS3BucketServices
     public readonly BasicAWSCredentials Credentials = new BasicAWSCredentials(
         accessKey: "access key", secretKey: "secret key");
 
-    public readonly string BucketName = "sales-advertisement-api";
+    // Sets the bucket name based on the environment.
+    public readonly string BucketName = 
+        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ? 
+            "sales-advertisement-api-dev" : "sales-advertisement-api";
     
     public static async Task<bool> UploadFileAsync(
         IAmazonS3 client, string bucketName, int userId, string objectName, string filePath)
