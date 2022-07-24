@@ -6,8 +6,10 @@ namespace SalesAdvertisementApi.Services;
 
 public class AwsS3BucketServices
 {
-    public readonly BasicAWSCredentials Credentials = new BasicAWSCredentials(
-        accessKey: "access key", secretKey: "secret key");
+    public readonly BasicAWSCredentials Credentials = new (
+        accessKey: Environment.GetEnvironmentVariable("ACCESS_KEY"), 
+        secretKey: Environment.GetEnvironmentVariable("SECRET_KEY")
+        );
 
     // Sets the bucket name based on the environment.
     public readonly string BucketName = 
