@@ -60,19 +60,19 @@ public class UserService
 
         if(userToUpdate is null)
             throw new NullReferenceException("User does not exists!");
-        
-        if(user.Email is not null && user.Password is not null)
+
+        if(!String.IsNullOrEmpty(user.Email) && !String.IsNullOrEmpty(user.Password))
         {
             userToUpdate.Email = user.Email;
             userToUpdate.Password = user.Password;
             await _databaseContext.SaveChangesAsync();
         }
-        else if(user.Email is not null)
+        else if(!String.IsNullOrEmpty(user.Email))
         {
             userToUpdate.Email = user.Email;
             await _databaseContext.SaveChangesAsync();
         }
-        else if(user.Password is not null)
+        else if(!String.IsNullOrEmpty(user.Password))
         {
             userToUpdate.Password = user.Password;
             await _databaseContext.SaveChangesAsync();
