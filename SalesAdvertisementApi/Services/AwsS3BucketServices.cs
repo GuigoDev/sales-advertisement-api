@@ -1,4 +1,3 @@
-using System.Collections;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
