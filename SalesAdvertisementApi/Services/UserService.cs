@@ -89,7 +89,7 @@ public class UserService
         var userImages = await AwsS3BucketServices.ListObjectsAsync(_client, _bucketName, userToDelete.UserId);
         var count = 0;
 
-        foreach (var image in userImages.S3Objects)
+        while (count < userImages.S3Objects.Count)
         {
             count++;
         }
