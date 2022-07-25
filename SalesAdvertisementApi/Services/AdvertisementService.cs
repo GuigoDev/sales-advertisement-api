@@ -25,10 +25,12 @@ public class AdvertisementService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public async Task<List<Advertisement>> GetAdvertisementsAsync()
+    public async Task<List<Advertisement>> GetAdvertisementsAsync(int skip, int take)
     {
         return await _databaseContext.Advertisements
             .AsNoTracking()
+            .Skip(skip)
+            .Take(take)
             .Include(advertisement => advertisement.User)
             .ToListAsync();
     }

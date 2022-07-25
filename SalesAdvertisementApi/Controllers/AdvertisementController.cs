@@ -15,9 +15,9 @@ public class AdvertisementController : ControllerBase
         _advertisementService = advertisementService;
     }
 
-    [HttpGet]
-    public async Task<List<Advertisement>> Get()
-        => await _advertisementService.GetAdvertisementsAsync();
+    [HttpGet("skip/{skip:int}/take/{take:int}")]
+    public async Task<List<Advertisement>> Get([FromRoute] int skip, [FromRoute] int take)
+        => await _advertisementService.GetAdvertisementsAsync(skip, take);
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Advertisement>> GetById(int id)
