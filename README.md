@@ -52,7 +52,7 @@ Rotas:
                   
   - Deletar um usuário ultilizando seu id (ex: 1): /user/1
 
-  - Buscar todos os anúncios: /advertisement/
+  - Buscar todos os anúncios: /advertisement/skip/0/take/10
   - Buscar um único anúncio ultilizando seu id (ex: 1): /advertisement/1
   - Criar um novo anúncio: /advertisement/create
     
