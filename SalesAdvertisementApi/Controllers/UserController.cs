@@ -43,7 +43,7 @@ public class UserController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = user.UserId }, user);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, User user)
     {
         var userToUpdate = await _userService.GetUserByIdAsync(id);
@@ -55,7 +55,7 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var userToDelete = await _userService.GetUserByIdAsync(id);
