@@ -8,7 +8,7 @@ namespace SalesAdvertisementApi.Controllers;
 [Route("/[controller]")]
 public class AdvertisementController : ControllerBase
 {
-    AdvertisementService _advertisementService;
+    private readonly AdvertisementService _advertisementService;
 
     public AdvertisementController(AdvertisementService advertisementService)
     {
