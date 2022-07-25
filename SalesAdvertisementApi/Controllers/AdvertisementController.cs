@@ -19,7 +19,7 @@ public class AdvertisementController : ControllerBase
     public async Task<List<Advertisement>> Get([FromRoute] int skip, [FromRoute] int take)
         => await _advertisementService.GetAdvertisementsAsync(skip, take);
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Advertisement>> GetById(int id)
     {
         var advertisement = await _advertisementService.GetAdvertisementAsync(id);
@@ -41,7 +41,7 @@ public class AdvertisementController : ControllerBase
         );
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, Advertisement advertisement)
     {
         var advertisementToUpdate = await _advertisementService.GetAdvertisementAsync(id);
@@ -53,7 +53,7 @@ public class AdvertisementController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var advertisementToDelete = await _advertisementService.GetAdvertisementAsync(id);
