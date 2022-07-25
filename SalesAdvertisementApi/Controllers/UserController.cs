@@ -19,7 +19,7 @@ public class UserController : ControllerBase
     public async Task<IEnumerable<User>> Get([FromRoute] int skip, [FromRoute] int take)
         => await _userService.GetUsersAsync(skip, take);
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<User>> GetById(int id)
     {
         var user = await _userService.GetUserByIdAsync(id);
