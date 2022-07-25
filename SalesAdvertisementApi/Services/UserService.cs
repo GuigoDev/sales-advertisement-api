@@ -23,8 +23,12 @@ public class UserService
         _databaseContext = databaseContext;
     }
 
-    public async Task<IEnumerable<User>> GetUsersAsync()
-        => await _databaseContext.Users.AsNoTracking().ToListAsync();
+    public async Task<IEnumerable<User>> GetUsersAsync(int skip, int take)
+        => await _databaseContext.Users
+            .AsNoTracking()
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
     
     public async Task<User?> GetUserByIdAsync(int id)
     {

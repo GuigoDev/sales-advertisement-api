@@ -15,9 +15,9 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
-    public async Task<IEnumerable<User>> Get()
-        => await _userService.GetUsersAsync();
+    [HttpGet("skip/{skip:int}/take/{take:int}")]
+    public async Task<IEnumerable<User>> Get([FromRoute] int skip, [FromRoute] int take)
+        => await _userService.GetUsersAsync(skip, take);
 
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetById(int id)
