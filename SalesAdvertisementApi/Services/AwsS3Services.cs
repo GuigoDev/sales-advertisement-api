@@ -42,15 +42,15 @@ public class AwsS3Services
 
     public static async Task AddAclToExistingObjectAsync(IAmazonS3 client, string bucketName, int userId, string keyName)
     {
-        GetACLResponse aclResponse = await client.GetACLAsync(new GetACLRequest
+        var aclResponse = await client.GetACLAsync(new GetACLRequest
         {
             BucketName = bucketName,
             Key = $"advertisement-images/{userId}/{keyName}"
         });
 
-        S3AccessControlList acl = aclResponse.AccessControlList;
+        var acl = aclResponse.AccessControlList;
 
-        Owner owner = acl.Owner;
+        var owner = acl.Owner;
 
         var grantPublicGroup = new S3Grant
         {
