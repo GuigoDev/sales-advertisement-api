@@ -100,12 +100,12 @@ public class AwsS3Services
 
         foreach (var obj in objects.S3Objects)
         {
-            var image = obj.Key;
+            var objectKey = obj.Key;
             
             var fileDeleteRequest = new DeleteObjectRequest()
             {
                 BucketName = bucketName,
-                Key = image
+                Key = objectKey
             };
             
             await client.DeleteObjectAsync(fileDeleteRequest);
