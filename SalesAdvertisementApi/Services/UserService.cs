@@ -12,11 +12,11 @@ public class UserService
     
     private readonly IAmazonS3 _client = new AmazonS3Client
     (
-        new AwsS3BucketServices().Credentials, 
+        new AwsS3Services().Credentials, 
         RegionEndpoint.USWest2
     );
 
-    private readonly string _bucketName = new AwsS3BucketServices().BucketName;
+    private readonly string _bucketName = new AwsS3Services().BucketName;
     
     public UserService(DatabaseContext databaseContext)
     {
@@ -90,7 +90,7 @@ public class UserService
         if(userToDelete is null)
             throw new NullReferenceException("User does not exists!");
         
-        var userImages = await AwsS3BucketServices.ListObjectsAsync(_client, _bucketName, userToDelete.UserId);
+        var userImages = await AwsS3Services.ListObjectsAsync(_client, _bucketName, userToDelete.UserId);
         var count = 0;
 
         while (count < userImages.S3Objects.Count)
@@ -100,7 +100,7 @@ public class UserService
         
         if (count > 0)
         {
-            await AwsS3BucketServices.DeleteUserFoldAsync(_client, _bucketName, userToDelete.UserId);
+            await AwsS3Services.DeleteUserFoldAsync(_client, _bucketName, userToDelete.UserId);
             
             _databaseContext.Users.Remove(userToDelete);
             await _databaseContext.SaveChangesAsync();

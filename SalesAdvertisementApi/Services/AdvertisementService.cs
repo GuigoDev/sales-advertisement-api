@@ -13,11 +13,11 @@ public class AdvertisementService
 
     private readonly IAmazonS3 _client = new AmazonS3Client
     (
-        new AwsS3BucketServices().Credentials,
+        new AwsS3Services().Credentials,
         RegionEndpoint.USWest2
     );
 
-    private readonly string _bucketName = new AwsS3BucketServices().BucketName;
+    private readonly string _bucketName = new AwsS3Services().BucketName;
 
     public AdvertisementService(DatabaseContext databaseContext, IWebHostEnvironment webHostEnvironment)
     {
@@ -67,7 +67,7 @@ public class AdvertisementService
             await image.CopyToAsync(stream);
         }
 
-        await AwsS3BucketServices.UploadFileAsync
+        await AwsS3Services.UploadFileAsync
         (
             _client, 
             _bucketName,
@@ -76,7 +76,7 @@ public class AdvertisementService
             imagePath
         );
         
-        await AwsS3BucketServices.AddAclToExistingObjectAsync
+        await AwsS3Services.AddAclToExistingObjectAsync
         (
             _client, 
             _bucketName,
@@ -150,7 +150,7 @@ public class AdvertisementService
         
         var keyName = advertisementToDelete.ImageName;
         
-        await AwsS3BucketServices.DeleteObjectAsync
+        await AwsS3Services.DeleteObjectAsync
         (
             _client,
             _bucketName,

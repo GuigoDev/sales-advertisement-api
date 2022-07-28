@@ -4,7 +4,7 @@ using Amazon.S3.Model;
 
 namespace SalesAdvertisementApi.Services;
 
-public class AwsS3BucketServices
+public class AwsS3Services
 {
     public readonly BasicAWSCredentials Credentials = new (
         accessKey: Environment.GetEnvironmentVariable("ACCESS_KEY"), 
