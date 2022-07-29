@@ -29,15 +29,9 @@ public class AwsS3Services
         var response = await client.PutObjectAsync(request);
 
         if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
-        {
-            Console.WriteLine($"Successfully uploaded {objectName} to {bucketName}");
             return true;
-        }
-        else
-        {
-            Console.WriteLine($"Could not upload {objectName} to {bucketName}");
-            return false;
-        }
+        
+        return false;
     }
 
     public static async Task AddAclToExistingObjectAsync(IAmazonS3 client, string bucketName, int userId, string keyName)
